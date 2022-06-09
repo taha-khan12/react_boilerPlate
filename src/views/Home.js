@@ -1,16 +1,26 @@
 import {
-  ChakraProvider,
   Box,
   Text,
   Code,
+  Button,
   Stack,
   Flex,
 } from '@chakra-ui/react';
-import { ColorModeSwitcher } from '../ColorModeSwitcher';
 import { Logo } from '../Logo';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateName } from '../reducers/useReducers'
 
 export default function Home() {
+
+  const dispatch = useDispatch()
+
+  const changeName = ()=> {
+    dispatch(updateName('Developer!'))
+  }
+
+  const { name } = useSelector((state)=>{
+    return state
+  })
 
   return (
     <>
@@ -19,9 +29,16 @@ export default function Home() {
           <Stack spacing={8} justifyContent='center'>
             <Logo h="40vmin" pointerEvents="none" />
             <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
+              {`Welcome Back, ${name}`}
             </Text>
-            <Link to='/wasd'>Go To Error Page</Link>
+            <Text>
+              Edit <Code fontSize="xl">src/views/Home.js</Code> and save to reload.
+            </Text>
+            <Box textAlign='center'>
+              <Button onClick={()=>{changeName()}} variant='outline' colorScheme='teal' w='140px' h='45px' >
+                Change Name
+              </Button>
+            </Box>
           </Stack>
         </Flex>
       </Box>
