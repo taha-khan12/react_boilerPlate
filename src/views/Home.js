@@ -5,23 +5,30 @@ import {
   Button,
   Stack,
   Flex,
+  HStack,
 } from '@chakra-ui/react';
 import { Logo } from '../Logo';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateName } from '../reducers/useReducers'
+import { updateName, fetchUserName, logout } from '../reducers/useReducers'
 
 export default function Home() {
 
   const dispatch = useDispatch()
 
   const changeName = ()=> {
-    dispatch(updateName('Developer!'))
+    dispatch(updateName({name: 'Developer!'}))
   }
 
-  const { name } = useSelector((state)=>{
-    return state
-  })
+  const internetName = ()=> {
+    dispatch(fetchUserName())
+  }
 
+  const removeUser = ()=> {
+    dispatch(logout())
+  }
+
+  const user = useSelector(state => state.value?.name);
+ 
   return (
     <>
       <Box textAlign="center" fontSize="xl">
@@ -29,16 +36,22 @@ export default function Home() {
           <Stack spacing={8} justifyContent='center'>
             <Logo h="40vmin" pointerEvents="none" />
             <Text>
-              {`Welcome Back, ${name}`}
+              {`Welcome Back, ${user ?? 'User'}`}
             </Text>
             <Text>
               Edit <Code fontSize="xl">src/views/Home.js</Code> and save to reload.
             </Text>
-            <Box textAlign='center'>
+            <HStack justify='center'>
               <Button onClick={()=>{changeName()}} variant='outline' colorScheme='teal' w='140px' h='45px' >
                 Change Name
               </Button>
-            </Box>
+              <Button onClick={()=>{internetName()}} variant='outline' colorScheme='teal' w='140px' h='45px' >
+                Internet User
+              </Button>
+              <Button onClick={()=>{removeUser()}} variant='outline' colorScheme='teal' w='140px' h='45px' >
+                Remove User
+              </Button>
+            </HStack>
           </Stack>
         </Flex>
       </Box>
